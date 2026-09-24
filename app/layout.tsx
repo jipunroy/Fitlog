@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { FitLogProvider } from "@/context/FitLogContext";
 
 export const metadata: Metadata = {
   title: "FitLog — Workout Library",
@@ -19,17 +20,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-[#0b0c0f] text-white antialiased">
-        <Navbar />
+        <FitLogProvider>
+          <Navbar />
 
-        {children}
+          {children}
 
-        <Footer />
+          <Footer />
 
-        <Toaster
-          position="bottom-right"
-          theme="dark"
-          richColors
-        />
+          <Toaster
+            position="bottom-right"
+            theme="dark"
+            richColors
+          />
+        </FitLogProvider>
       </body>
     </html>
   );

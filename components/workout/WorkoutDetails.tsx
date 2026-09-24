@@ -2,10 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Clock3,
-  Dumbbell,
-  Flame,
-  Star,
   Target,
 } from "lucide-react";
 
@@ -79,74 +75,91 @@ export default function WorkoutDetails({
               {workout.description}
             </p>
 
-            {/* Stats */}
-            <div className="mt-8 grid grid-cols-2 border-y border-white/10 sm:grid-cols-4">
-              <div className="border-b border-white/10 p-4 sm:border-b-0 sm:border-r">
-                <Clock3 size={17} className="text-[#ccff00]" />
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Duration
-                </p>
-                <p className="mt-1 text-lg font-black text-white">
-                  {workout.duration} min
+            {/* Key Specs */}
+            <div className="mt-8 border-y border-white/10">
+              <div className="border-b border-white/10 py-4">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ccff00]">
+                  Key Specs
                 </p>
               </div>
 
-              <div className="border-b border-white/10 p-4 sm:border-b-0 sm:border-r">
-                <Flame size={17} className="text-[#ccff00]" />
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Calories
-                </p>
-                <p className="mt-1 text-lg font-black text-white">
-                  {workout.caloriesBurned}
-                </p>
-              </div>
+              <div className="grid sm:grid-cols-2">
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4 sm:border-r">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Equipment
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.equipment}
+                  </span>
+                </div>
 
-              <div className="border-r border-white/10 p-4">
-                <Star size={17} className="text-[#ccff00]" />
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Rating
-                </p>
-                <p className="mt-1 text-lg font-black text-white">
-                  {workout.rating}
-                </p>
-              </div>
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Difficulty
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.difficulty}
+                  </span>
+                </div>
 
-              <div className="p-4">
-                <Dumbbell size={17} className="text-[#ccff00]" />
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Equipment
-                </p>
-                <p className="mt-1 text-sm font-black uppercase text-white">
-                  {workout.equipment}
-                </p>
-              </div>
-            </div>
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4 sm:border-r">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Sets
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.sets}
+                  </span>
+                </div>
 
-            {/* Sets / Reps */}
-            <div className="mt-6 flex items-center gap-8">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Sets
-                </p>
-                <p className="mt-1 text-2xl font-black text-white">
-                  {workout.sets}
-                </p>
-              </div>
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Reps
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.reps}
+                  </span>
+                </div>
 
-              <div className="h-10 w-px bg-white/10" />
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4 sm:border-r">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Duration
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.duration} min
+                  </span>
+                </div>
 
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  Reps
-                </p>
-                <p className="mt-1 text-2xl font-black text-white">
-                  {workout.reps}
-                </p>
+                <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Calories
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.caloriesBurned} kcal
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between px-4 py-4 sm:border-r">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Rating
+                  </span>
+                  <span className="text-sm font-bold text-white">
+                    {workout.rating}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between px-4 py-4">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                    Muscle Groups
+                  </span>
+                  <span className="text-right text-sm font-bold text-white">
+                    {workout.muscleGroups.join(", ")}
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* Actions */}
-            <WorkoutActions workoutName={workout.name} />
+            <WorkoutActions workout={workout} />
           </div>
         </div>
 
@@ -155,30 +168,30 @@ export default function WorkoutDetails({
           <div className="grid gap-10 lg:grid-cols-[0.4fr_0.6fr]">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ccff00]">
-                How To
+                Instructions
               </p>
 
               <h2 className="mt-3 text-4xl font-black uppercase tracking-[-0.03em] text-white sm:text-5xl">
-                Instructions
+                How To
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <ol className="space-y-5">
               {workout.instructions.map((instruction, index) => (
-                <div
+                <li
                   key={`${workout.id}-${index}`}
                   className="flex gap-5 border-b border-white/10 pb-5"
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-[#ccff00] text-xs font-black text-black">
-                    {String(index + 1).padStart(2, "0")}
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-[#ccff00] text-xs font-black text-black">
+                    {index + 1}
                   </span>
 
-                  <p className="pt-1 text-sm leading-6 text-zinc-400">
+                  <p className="pt-1 text-sm leading-7 text-zinc-400">
                     {instruction}
                   </p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 

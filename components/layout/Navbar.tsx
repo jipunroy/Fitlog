@@ -3,22 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
+
 import Brand from "./Brand";
+import { useFitLog } from "@/context/FitLogContext";
 
 export default function Navbar() {
   const pathname = usePathname();
 
+  const { planCount, savedCount } = useFitLog();
+
   const isHome = pathname === "/";
   const isPlan = pathname === "/my-plan";
-
-  // Temporary values.
-  // FitLogContext তৈরি করার পর এগুলো live হবে.
-  const planCount = 0;
-  const savedCount = 0;
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0b0c0f]/95 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
+        
         {/* Brand */}
         <Brand />
 
