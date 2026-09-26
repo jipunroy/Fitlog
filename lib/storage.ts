@@ -1,48 +1,61 @@
-import { Workout } from "@/types/workout";
+import type { Workout } from "@/types/workout";
 
 const PLAN_KEY = "fitlog-plan";
 const SAVED_KEY = "fitlog-saved";
+const COMPLETED_KEY = "fitlog-completed";
 
-export function getStoredPlan(): Workout[] {
+function getStoredArray<T>(key: string): T[] {
   if (typeof window === "undefined") {
     return [];
   }
 
   try {
-    const stored = localStorage.getItem(PLAN_KEY);
+    const stored = localStorage.getItem(key);
 
     if (!stored) {
       return [];
     }
 
-    return JSON.parse(stored);
+    const parsed: unknown = JSON.parse(stored);
+
+    return Array.isArray(parsed) ? (parsed as T[]) : [];
   } catch {
     return [];
   }
+}
+
+function saveStoredArray<T>(key: string, data: T[]): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
+export function getStoredPlan(): Workout[] {
+  return getStoredArray<Workout>(PLAN_KEY);
 }
 
 export function getStoredSaved(): Workout[] {
-  if (typeof window === "undefined") {
-    return [];
-  }
-
-  try {
-    const stored = localStorage.getItem(SAVED_KEY);
-
-    if (!stored) {
-      return [];
-    }
-
-    return JSON.parse(stored);
-  } catch {
-    return [];
-  }
+  return getStoredArray<Workout>(SAVED_KEY);
 }
 
-export function savePlan(workouts: Workout[]) {
-  localStorage.setItem(PLAN_KEY, JSON.stringify(workouts));
+export function getStoredCompleted(): number[] {
+  return getStoredArray<number>(COMPLETED_KEY);
 }
 
-export function saveSaved(workouts: Workout[]) {
-  localStorage.setItem(SAVED_KEY, JSON.stringify(workouts));
+export function savePlan(workouts: Workout[]): void {
+  saveStoredArray(PLAN_KEY, workouts);
+}
+
+export function saveSaved(workouts: Workout[]): void {
+  saveStoredArray(SAVED_KEY, workouts);
+}
+
+export function saveCompleted(ids: number[]): void {
+  saveStoredArray(COMPLETED_KEY, ids);
 }

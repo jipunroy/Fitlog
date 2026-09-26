@@ -2,7 +2,9 @@
 
 interface PlanTabsProps {
   activeTab: "today" | "saved";
-  onChange: (tab: "today" | "saved") => void;
+  onChange: (
+    tab: "today" | "saved"
+  ) => void;
 }
 
 export default function PlanTabs({

@@ -21,8 +21,11 @@ export default function PlanSearch({
       <input
         type="text"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) =>
+          onChange(event.target.value)
+        }
         placeholder="Search your workouts..."
+        aria-label="Search your workouts"
         className="h-12 w-full border border-white/10 bg-[#111216] pl-11 pr-11 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-[#ccff00]/60"
       />
 

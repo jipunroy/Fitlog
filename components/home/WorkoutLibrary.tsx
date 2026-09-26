@@ -2,11 +2,12 @@
 
 import { useMemo, useState } from "react";
 
-import { Workout } from "@/types/workout";
+import type { Workout } from "@/types/workout";
+
 import WorkoutCard from "./WorkoutCard";
 import SearchBar from "./SearchBar";
 import SortDropdown, {
-  SortOption,
+  type SortOption,
 } from "./SortDropdown";
 
 interface WorkoutLibraryProps {
@@ -24,74 +25,58 @@ export default function WorkoutLibrary({
     const query = search.trim().toLowerCase();
 
     const filtered = workouts.filter((workout) => {
-      if (!query) return true;
+      if (!query) {
+        return true;
+      }
 
-      const nameMatch = workout.name
-        .toLowerCase()
-        .includes(query);
+      const searchableText = [
+        workout.name,
+        workout.equipment,
+        workout.difficulty,
+        ...workout.muscleGroups,
+      ]
+        .join(" ")
+        .toLowerCase();
 
-      const muscleMatch = workout.muscleGroups.some(
-        (muscle) =>
-          muscle.toLowerCase().includes(query)
-      );
-
-      const equipmentMatch = workout.equipment
-        .toLowerCase()
-        .includes(query);
-
-      return (
-        nameMatch ||
-        muscleMatch ||
-        equipmentMatch
-      );
+      return searchableText.includes(query);
     });
 
     return [...filtered].sort((a, b) => {
-      if (sortBy === "calories") {
-        return b.caloriesBurned - a.caloriesBurned;
-      }
+      switch (sortBy) {
+        case "calories":
+          return b.caloriesBurned - a.caloriesBurned;
 
-      if (sortBy === "rating") {
-        return b.rating - a.rating;
-      }
+        case "rating":
+          return b.rating - a.rating;
 
-      return a.duration - b.duration;
+        case "duration":
+        default:
+          return a.duration - b.duration;
+      }
     });
   }, [workouts, search, sortBy]);
 
   return (
     <section
       id="library"
-      className="mx-auto max-w-[1440px] px-5 py-16 sm:px-8 md:py-20 lg:px-10"
+      className="mx-auto max-w-360 px-5 py-14 sm:px-8 md:py-16 lg:px-10"
     >
       {/* Header */}
-      <div className="border-b border-white/10 pb-8">
-        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <div className="border-b border-white/10 pb-6">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          {/* Title */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ccff00]">
+            <h2 className="text-3xl font-black uppercase tracking-[-0.035em] text-white sm:text-4xl">
               The Library
-            </p>
-
-            <h2 className="mt-3 text-4xl font-black uppercase tracking-[-0.03em] text-white sm:text-5xl">
-              Twelve Lifts.
             </h2>
+
+            <p className="mt-1 text-xs text-zinc-500 sm:text-sm">
+              Twelve lifts covering every major muscle group.
+            </p>
           </div>
 
-          <p className="max-w-md text-sm leading-6 text-zinc-500 md:text-right">
-            Twelve lifts covering every major muscle group.
-          </p>
-        </div>
-
-        {/* Controls */}
-        <div className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
-            {filteredWorkouts.length}{" "}
-            {filteredWorkouts.length === 1
-              ? "Workout"
-              : "Workouts"}
-          </p>
-
-          <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+          {/* Search + Sort */}
+          <div className="flex w-full flex-col gap-2.5 sm:flex-row lg:w-auto">
             <SearchBar
               value={search}
               onChange={setSearch}
@@ -103,11 +88,31 @@ export default function WorkoutLibrary({
             />
           </div>
         </div>
+
+        {/* Result Count */}
+        <div className="mt-5 flex items-center justify-between">
+          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-zinc-600">
+            Showing {filteredWorkouts.length}{" "}
+            {filteredWorkouts.length === 1
+              ? "Workout"
+              : "Workouts"}
+          </p>
+
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#ccff00] transition hover:text-white"
+            >
+              Clear Search
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Workout Grid */}
+      {/* Grid */}
       {filteredWorkouts.length > 0 ? (
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredWorkouts.map((workout) => (
             <WorkoutCard
               key={workout.id}
@@ -116,23 +121,24 @@ export default function WorkoutLibrary({
           ))}
         </div>
       ) : (
-        <div className="mt-10 border border-dashed border-white/15 px-6 py-20 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ccff00]">
+        <div className="mt-7 border border-dashed border-white/10 px-6 py-20 text-center">
+          <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#ccff00]">
             No Results
           </p>
 
-          <h3 className="mt-4 text-3xl font-black uppercase text-white">
+          <h3 className="mt-3 text-2xl font-black uppercase text-white">
             No Workouts Found
           </h3>
 
-          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-500">
-            Try another workout name, muscle group, or equipment.
+          <p className="mx-auto mt-2 max-w-md text-xs leading-5 text-zinc-500">
+            Try another workout name, muscle group, equipment,
+            or difficulty.
           </p>
 
           <button
             type="button"
             onClick={() => setSearch("")}
-            className="mt-7 bg-[#ccff00] px-5 py-3.5 text-xs font-black uppercase tracking-[0.12em] text-black transition hover:bg-[#d8ff33]"
+            className="mt-6 bg-[#ccff00] px-5 py-3 text-[10px] font-black uppercase tracking-[0.12em] text-black transition hover:bg-[#d8ff33]"
           >
             Clear Search
           </button>

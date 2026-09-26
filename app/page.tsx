@@ -6,7 +6,7 @@ export default async function HomePage() {
   const workouts = await getWorkouts();
 
   return (
-    <main>
+    <main className="min-h-screen bg-[#0b0c0f]">
       <Hero />
       <WorkoutLibrary workouts={workouts} />
     </main>

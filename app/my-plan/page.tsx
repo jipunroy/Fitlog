@@ -2,16 +2,18 @@
 
 import { useMemo, useState } from "react";
 
+import EmptyPlan from "@/components/plan/EmptyPlan";
+import PlanSearch from "@/components/plan/PlanSearch";
 import PlanStats from "@/components/plan/PlanStats";
 import PlanTabs from "@/components/plan/PlanTabs";
 import PlanWorkoutCard from "@/components/plan/PlanWorkoutCard";
-import EmptyPlan from "@/components/plan/EmptyPlan";
-import PlanSearch from "@/components/plan/PlanSearch";
 import { useFitLog } from "@/context/FitLogContext";
+
+type PlanTab = "today" | "saved";
 
 export default function MyPlanPage() {
   const [activeTab, setActiveTab] =
-    useState<"today" | "saved">("today");
+    useState<PlanTab>("today");
 
   const [search, setSearch] = useState("");
 
@@ -49,9 +51,7 @@ export default function MyPlanPage() {
     });
   }, [currentWorkouts, search]);
 
-  const handleTabChange = (
-    tab: "today" | "saved"
-  ) => {
+  const handleTabChange = (tab: PlanTab) => {
     setActiveTab(tab);
     setSearch("");
   };
@@ -59,6 +59,8 @@ export default function MyPlanPage() {
   return (
     <main className="min-h-screen bg-[#0b0c0f]">
       <div className="mx-auto max-w-360 px-5 py-12 sm:px-8 md:py-16 lg:px-10">
+
+        {/* Header */}
         <div className="max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ccff00]">
             Your Log
@@ -73,10 +75,12 @@ export default function MyPlanPage() {
           </p>
         </div>
 
+        {/* Metrics */}
         <div className="mt-10">
           <PlanStats />
         </div>
 
+        {/* Tabs */}
         <div className="mt-12">
           <PlanTabs
             activeTab={activeTab}
@@ -84,6 +88,7 @@ export default function MyPlanPage() {
           />
         </div>
 
+        {/* Search / Count */}
         <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
             {filteredWorkouts.length}{" "}
@@ -98,6 +103,7 @@ export default function MyPlanPage() {
           />
         </div>
 
+        {/* Workout List */}
         <div className="mt-8 space-y-4">
           {filteredWorkouts.length === 0 ? (
             search ? (
@@ -111,8 +117,16 @@ export default function MyPlanPage() {
                 </h2>
 
                 <p className="mt-3 text-sm text-zinc-500">
-                  Try another workout name or muscle group.
+                  Try another workout name, muscle group, or equipment.
                 </p>
+
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="mt-7 bg-[#ccff00] px-5 py-3.5 text-xs font-black uppercase tracking-[0.12em] text-black transition hover:bg-[#d8ff33]"
+                >
+                  Clear Search
+                </button>
               </div>
             ) : (
               <EmptyPlan type={activeTab} />

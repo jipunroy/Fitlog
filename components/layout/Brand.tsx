@@ -5,18 +5,18 @@ export default function Brand() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2"
+      className="flex shrink-0 items-center gap-2"
       aria-label="FitLog home"
     >
       <Image
         src="/images/navbar/logo.png"
-        alt="FitLog logo"
-        width={30}
-        height={30}
+        alt="FitLog"
+        width={28}
+        height={28}
         priority
       />
 
-      <span className="text-lg font-extrabold tracking-tight text-white">
+      <span className="text-base font-black tracking-tight text-white sm:text-lg">
         FITLOG
       </span>
     </Link>

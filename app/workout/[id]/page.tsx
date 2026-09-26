@@ -14,11 +14,13 @@ export default async function WorkoutPage({
 }: WorkoutPageProps) {
   const { id } = await params;
 
-  try {
-    const workout = await getWorkout(id);
+  let workout;
 
-    return <WorkoutDetails workout={workout} />;
+  try {
+    workout = await getWorkout(id);
   } catch {
     notFound();
   }
+
+  return <WorkoutDetails workout={workout} />;
 }

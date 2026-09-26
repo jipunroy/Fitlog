@@ -12,18 +12,25 @@ export default function SearchBar({
   onChange,
 }: SearchBarProps) {
   return (
-    <div className="relative w-full md:max-w-sm">
+    <div className="relative w-full md:w-75">
+      <label htmlFor="workout-search" className="sr-only">
+        Search workouts
+      </label>
+
       <Search
-        size={18}
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
+        size={16}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
       />
 
       <input
-        type="text"
+        id="workout-search"
+        type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search workouts..."
-        className="h-12 w-full border border-white/10 bg-[#111216] pl-11 pr-11 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-[#ccff00]/60"
+        autoComplete="off"
+        className="h-11 w-full border border-white/10 bg-[#111216] pl-10 pr-10 text-xs text-white outline-none transition placeholder:text-zinc-600 focus:border-[#ccff00]/60"
       />
 
       {value && (
@@ -31,9 +38,9 @@ export default function SearchBar({
           type="button"
           onClick={() => onChange("")}
           aria-label="Clear search"
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition hover:text-white"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 transition hover:text-white"
         >
-          <X size={16} />
+          <X size={15} />
         </button>
       )}
     </div>

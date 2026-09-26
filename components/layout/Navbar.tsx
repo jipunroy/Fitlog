@@ -9,16 +9,16 @@ import { useFitLog } from "@/context/FitLogContext";
 
 export default function Navbar() {
   const pathname = usePathname();
-
   const { planCount, savedCount } = useFitLog();
 
-  const isHome = pathname === "/";
-  const isPlan = pathname === "/my-plan";
+  const isWorkout =
+    pathname === "/" || pathname.startsWith("/workout");
+
+  const isPlan = pathname.startsWith("/my-plan");
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0b0c0f]/95 backdrop-blur">
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        
+      <div className="mx-auto flex h-18 max-w-360 items-center justify-between px-4 sm:px-6 lg:px-10">
         {/* Brand */}
         <Brand />
 
@@ -26,8 +26,8 @@ export default function Navbar() {
         <nav className="hidden items-center gap-2 md:flex">
           <Link
             href="/"
-            className={`px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] transition ${
-              isHome
+            className={`px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] transition ${
+              isWorkout
                 ? "bg-[#ccff00] text-black"
                 : "text-zinc-400 hover:text-white"
             }`}
@@ -37,7 +37,7 @@ export default function Navbar() {
 
           <Link
             href="/my-plan"
-            className={`px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] transition ${
+            className={`px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] transition ${
               isPlan
                 ? "bg-[#ccff00] text-black"
                 : "text-zinc-400 hover:text-white"
@@ -48,32 +48,42 @@ export default function Navbar() {
         </nav>
 
         {/* Counters */}
-        <div className="hidden items-center gap-2 sm:flex">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Plan */}
           <Link
             href="/my-plan"
-            className="flex items-center gap-2 rounded-full bg-[#ccff00] px-3 py-1.5 text-xs font-black uppercase tracking-wide text-black transition hover:scale-105"
+            aria-label={`Today's plan: ${planCount} workouts`}
+            className="flex items-center gap-1.5 rounded-full bg-[#ccff00] px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wide text-black transition hover:scale-105 sm:px-3"
           >
             <span>Plan</span>
-            <span>{planCount}</span>
+
+            <span className="flex min-w-4.25 items-center justify-center rounded-full bg-black/10 px-1">
+              {planCount}
+            </span>
           </Link>
 
+          {/* Saved */}
           <Link
             href="/my-plan"
-            className="flex items-center gap-2 rounded-full border border-white/30 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-white transition hover:border-white"
+            aria-label={`Saved workouts: ${savedCount}`}
+            className="flex items-center gap-1.5 rounded-full border border-white/25 px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wide text-white transition hover:border-white sm:px-3"
           >
             <span>Saved</span>
-            <span>{savedCount}</span>
+
+            <span className="flex min-w-4.25 items-center justify-center rounded-full border border-white/20 px-1">
+              {savedCount}
+            </span>
+          </Link>
+
+          {/* Mobile My Plan */}
+          <Link
+            href="/my-plan"
+            className="ml-1 flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-white md:hidden"
+            aria-label="Go to My Plan"
+          >
+            <ChevronRight size={14} />
           </Link>
         </div>
-
-        {/* Mobile My Plan */}
-        <Link
-          href="/my-plan"
-          className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-white md:hidden"
-        >
-          My Plan
-          <ChevronRight size={15} />
-        </Link>
       </div>
     </header>
   );

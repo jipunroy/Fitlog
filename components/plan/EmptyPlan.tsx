@@ -13,7 +13,9 @@ export default function EmptyPlan({
   return (
     <div className="border border-dashed border-white/15 px-6 py-20 text-center">
       <p className="text-3xl font-black uppercase tracking-tight text-white">
-        {isToday ? "Nothing Here Yet" : "No Saved Workouts"}
+        {isToday
+          ? "Nothing Here Yet"
+          : "No Saved Workouts"}
       </p>
 
       <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-zinc-500">

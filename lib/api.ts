@@ -1,27 +1,60 @@
-import { Workout } from "@/types/workout";
+import type { Workout } from "@/types/workout";
 
 const API_URL = "https://api.abcz.workers.dev/api/fitlog";
 
+/**
+ * Fetch all workouts from the FitLog API.
+ */
 export async function getWorkouts(): Promise<Workout[]> {
   const response = await fetch(API_URL, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
     cache: "no-store",
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch workouts");
+    throw new Error(
+      `Failed to fetch workouts: ${response.status} ${response.statusText}`
+    );
   }
 
-  return response.json();
+  const data: unknown = await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid workout data received from API.");
+  }
+
+  return data as Workout[];
 }
 
-export async function getWorkout(id: string): Promise<Workout> {
-  const response = await fetch(`${API_URL}/${id}`, {
-    cache: "no-store",
-  });
+/**
+ * Find a single workout by ID.
+ *
+ * The provided API does not currently expose a working
+ * /api/fitlog/:id endpoint, so we fetch the collection
+ * and find the matching workout locally.
+ */
+export async function getWorkout(
+  id: string | number
+): Promise<Workout> {
+  const workouts = await getWorkouts();
 
-  if (!response.ok) {
-    throw new Error("Workout not found");
+  const numericId =
+    typeof id === "string" ? Number(id) : id;
+
+  if (!Number.isInteger(numericId)) {
+    throw new Error("Invalid workout ID.");
   }
 
-  return response.json();
+  const workout = workouts.find(
+    (item) => item.id === numericId
+  );
+
+  if (!workout) {
+    throw new Error("Workout not found.");
+  }
+
+  return workout;
 }

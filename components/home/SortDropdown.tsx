@@ -14,11 +14,8 @@ export default function SortDropdown({
   onChange,
 }: SortDropdownProps) {
   return (
-    <div className="relative w-full md:w-52">
-      <label
-        htmlFor="sort-workouts"
-        className="sr-only"
-      >
+    <div className="relative w-full md:w-42.5">
+      <label htmlFor="sort-workouts" className="sr-only">
         Sort By
       </label>
 
@@ -28,7 +25,7 @@ export default function SortDropdown({
         onChange={(event) =>
           onChange(event.target.value as SortOption)
         }
-        className="h-12 w-full appearance-none border border-white/10 bg-[#111216] px-4 pr-11 text-xs font-bold uppercase tracking-[0.12em] text-white outline-none transition focus:border-[#ccff00]/60"
+        className="h-11 w-full appearance-none border border-white/10 bg-[#111216] px-3 pr-9 text-[10px] font-bold uppercase tracking-widest text-white outline-none transition focus:border-[#ccff00]/60"
       >
         <option value="duration">Sort By: Duration</option>
         <option value="calories">Sort By: Calories</option>
@@ -36,8 +33,9 @@ export default function SortDropdown({
       </select>
 
       <ChevronDown
-        size={17}
-        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500"
+        size={15}
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500"
       />
     </div>
   );

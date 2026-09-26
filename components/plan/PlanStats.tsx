@@ -1,6 +1,10 @@
 "use client";
 
-import { Dumbbell, Flame, Timer } from "lucide-react";
+import {
+  Dumbbell,
+  Flame,
+  Timer,
+} from "lucide-react";
 
 import { useFitLog } from "@/context/FitLogContext";
 
@@ -10,12 +14,14 @@ export default function PlanStats() {
   const exercises = plan.length;
 
   const minutes = plan.reduce(
-    (total, workout) => total + workout.duration,
+    (total, workout) =>
+      total + workout.duration,
     0
   );
 
   const calories = plan.reduce(
-    (total, workout) => total + workout.caloriesBurned,
+    (total, workout) =>
+      total + workout.caloriesBurned,
     0
   );
 
